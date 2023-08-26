@@ -5,13 +5,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     CharacterController playerCC;
-    [SerializeField] float speed = 50f, rotationSpeed = 100f;
-    [SerializeField] float jumpForce = 6f, gravity = 20f;
+    Animator playerAnimator;
+    [SerializeField] float speed = 10f, rotationSpeed = 100f;
+    [SerializeField] float jumpForce = 10f, gravity = 5f;
     Vector3 move;
 
     void Start()
     {
-        playerCC = GetComponent<CharacterController>(); 
+        playerCC = GetComponent<CharacterController>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     
@@ -19,7 +21,7 @@ public class Player : MonoBehaviour
     {
         MovePlayer();
         RotationPlayer();
-
+        AnimationPlayer();
 
 
     }
@@ -33,7 +35,6 @@ public class Player : MonoBehaviour
         if (Input.GetButton("Jump"))
         {
             move.y = jumpForce;
-            print("Pulei");
         }
         move.y -= gravity;
 
@@ -47,5 +48,16 @@ public class Player : MonoBehaviour
 
         transform.Rotate(Input.GetAxis("Mouse X") * Vector3.up * Time.deltaTime * rotationSpeed);
 
+    }
+
+    private void AnimationPlayer()
+    {
+        if(playerCC.velocity.x != 0f && playerCC.velocity.z != 0f)
+        {
+            playerAnimator.SetBool("isWalk", true);
+        }
+        else playerAnimator.SetBool("isWalk", false);
+
+        playerAnimator.SetBool("isJump", !playerCC.isGrounded);
     }
 }
