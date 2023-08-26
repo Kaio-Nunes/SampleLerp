@@ -23,7 +23,7 @@ public class MovementBehavior : MonoBehaviour
     }
         
 
-    void Update()
+    void FixedUpdate()
     {
         MovementLoop();
     }
@@ -31,14 +31,14 @@ public class MovementBehavior : MonoBehaviour
     public void MovementLoop()
     {
 
-        print("Time: " + startTime);
+       // print("Time: " + startTime);
 
 
         float distCovered = (Time.time - startTime) * speed; //velocidade média
         float fractionOfJourney = distCovered / journeyLength;
 
         transform.position = Vector3.Lerp(startMarker, endMarker, fractionOfJourney);
-        print("Dist: " + fractionOfJourney);
+        //print("Dist: " + fractionOfJourney);
 
         if (fractionOfJourney >= 1)
         {
@@ -51,12 +51,12 @@ public class MovementBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) other.transform.parent = transform;
+        other.transform. SetParent(transform);
         
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player")) other.transform.parent = null;
+        other.transform.SetParent(null);
     }
 
 }
